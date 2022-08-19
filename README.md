@@ -15,7 +15,7 @@
 ### Code Review
 
 
-gen_chatting
+TODO.1 // gen_chatting
 
 ```elixir
 @impl true
@@ -26,6 +26,22 @@ gen_chatting
   end
 ```
 
+TODO.3 // gen_chatting
+
+```elixir
+  # Node끼리 연결시 하나의 gen_chatting 프로세스만 띄우도록 설정함.
+  def start_link(_init_arg) do
+    GenServer.start_link(__MODULE__, [], name: {:global, __MODULE__})
+  end
+
+  def connect() do
+    GenServer.call({:global, __MODULE__}, {:connect, self()})
+  end
+
+  def send(message) do
+    GenServer.cast({:global, __MODULE__}, {:send, message})
+  end
+```
 
 ## Installation
 

@@ -2,15 +2,15 @@ defmodule GenChattingSupervisor do
   use GenServer
 
   def start_link(_init_arg) do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+    GenServer.start_link(__MODULE__, [], name: {:global, __MODULE__})
   end
 
   def connect() do
-    GenServer.call(__MODULE__, {:connect, self()})
+    GenServer.call({:global, __MODULE__}, {:connect, self()})
   end
 
   def send(message) do
-    GenServer.cast(__MODULE__, {:send, message})
+    GenServer.cast({:global, __MODULE__}, {:send, message})
   end
 
   @impl true
