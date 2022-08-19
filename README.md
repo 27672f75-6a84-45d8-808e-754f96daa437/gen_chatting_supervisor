@@ -12,6 +12,21 @@
   - client에서 접속시 Node.connect를 해서 노드끼리의 연결을 해야하는데 자동으로 연결하게끔 해주는 역할을한다.
   - 또 Mix가 실행되는 환경이 dev, release, prod등 서로 다른 환경에서의 노드 연결 방법이 다르기 때문에 이를 제어하는 역할을한다.
 
+### Code Review
+
+
+gen_chatting
+
+```elixir
+@impl true
+  def handle_cast({:send, message}, state) do
+    # send 함수에 :message를 메세지와 함께 보내는데 이 이유는 클라이언트에서 메시지를 수신했을시 어떤 정보인지 알기위해서이다.
+    Enum.map(state, fn client_pid -> send(client_pid, {:message, message}) end)
+    {:noreply, state}
+  end
+```
+
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
